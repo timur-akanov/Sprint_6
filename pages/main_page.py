@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
+from config import BASE_URL
 
 
 class MainPage(BasePage):
@@ -17,19 +18,19 @@ class MainPage(BasePage):
         self.remove_cookie_banner()
 
     def remove_cookie_banner(self):
-        self.driver.execute_script("""
+        self.execute_script("""
         const overlay = document.querySelector('[class*="CookieConsent"]');
         if (overlay) overlay.remove();
         """)
 
     def expand_faq_item(self, index):
-        buttons = self.driver.find_elements(*self.FAQ_BUTTONS)
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", buttons[index])
-        self.driver.execute_script("arguments[0].click();", buttons[index])
+        buttons = self.find_elements(self.FAQ_BUTTONS)
+        self.execute_script("arguments[0].scrollIntoView({block: 'center'});", buttons[index])
+        self.execute_script("arguments[0].click();", buttons[index])
 
     def get_faq_answer_text(self, index):
-        panels = self.driver.find_elements(*self.FAQ_ANSWER_PANELS)
-        return self.driver.execute_script("return arguments[0].textContent;", panels[index]).strip()
+        panels = self.find_elements(self.FAQ_ANSWER_PANELS)
+        return self.execute_script("return arguments[0].textContent;", panels[index]).strip()
 
     def click_order_button(self, entry_point):
         self.remove_cookie_banner()
@@ -37,17 +38,17 @@ class MainPage(BasePage):
         self.click(locator)
 
     def click_scooter_logo(self):
-        element = self.driver.find_element(*self.SCOOTER_LOGO)
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
-        self.driver.execute_script("arguments[0].click();", element)
+        element = self.find_element(self.SCOOTER_LOGO)
+        self.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+        self.execute_script("arguments[0].click();", element)
 
     def click_yandex_logo(self):
-        element = self.driver.find_element(*self.YANDEX_LOGO)
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
-        self.driver.execute_script("arguments[0].click();", element)
-        self.wait.until(lambda driver: len(driver.window_handles) > 1)
-        self.driver.switch_to.window(self.driver.window_handles[-1])
-        self.wait.until(lambda driver: "dzen" in driver.current_url.lower() or "yandex" in driver.current_url.lower())
+        element = self.find_element(self.YANDEX_LOGO)
+        self.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+        self.execute_script("arguments[0].click();", element)
+        self.wait.until(lambda driver: len(self.get_window_handles()) > 1)
+        self.switch_to_window(self.get_window_handles()[-1])
+        self.wait.until(lambda driver: "dzen" in self.get_current_url().lower() or "yandex" in self.get_current_url().lower())
 
     def is_home_page_open(self):
-        return self.driver.current_url.startswith(self.BASE_URL) and self.driver.find_element(*self.HOME_PAGE_BUTTONS).is_displayed()
+        return self.get_current_url().startswith(BASE_URL) and self.find_element(self.HOME_PAGE_BUTTONS).is_displayed()

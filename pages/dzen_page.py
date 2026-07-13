@@ -3,4 +3,5 @@ from pages.base_page import BasePage
 
 class DzenPage(BasePage):
     def is_loaded(self):
-        return "dzen" in self.driver.current_url.lower() or "yandex" in self.driver.current_url.lower()
+        current_url = self.get_current_url().lower()
+        return "dzen" in current_url or "yandex" in current_url

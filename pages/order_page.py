@@ -42,14 +42,14 @@ class OrderPage(BasePage):
     def fill_delivery_details(self):
         delivery_date = (date.today() + timedelta(days=1)).strftime("%d.%m.%Y")
         self.fill_input(self.DATE_INPUT, delivery_date)
-        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ESCAPE)
+        self.press_key(Keys.ESCAPE)
         self.click(self.RENTAL_PERIOD_DROPDOWN)
         self.click(self.RENTAL_OPTION)
         self.click(self.BLACK_COLOR)
         self.fill_input(self.COMMENT_INPUT, "Тестовый заказ")
 
     def confirm_order(self):
-        buttons = self.driver.find_elements(*self.ORDER_BUTTON)
+        buttons = self.find_elements(self.ORDER_BUTTON)
         buttons[-1].click()
         self.click(self.CONFIRM_ORDER_BUTTON)
 
