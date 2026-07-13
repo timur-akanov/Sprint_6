@@ -1,16 +1,15 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from config import BASE_URL, WAIT_TIMEOUT
 
 
 class BasePage:
-    BASE_URL = "https://qa-scooter.praktikum-services.ru/"
-
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, WAIT_TIMEOUT)
 
     def open(self):
-        self.driver.get(self.BASE_URL)
+        self.driver.get(BASE_URL)
         self.wait.until(EC.url_contains("qa-scooter.praktikum-services.ru"))
 
     def click(self, locator):
